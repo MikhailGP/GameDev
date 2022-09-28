@@ -1,0 +1,7 @@
+C:\Users\User\source\repos\ConsoleSnake\bin\Debug\ConsoleSnake.exe.config
+C:\Users\User\source\repos\ConsoleSnake\bin\Debug\ConsoleSnake.exe
+C:\Users\User\source\repos\ConsoleSnake\bin\Debug\ConsoleSnake.pdb
+C:\Users\User\source\repos\ConsoleSnake\obj\Debug\ConsoleSnake.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\ConsoleSnake\obj\Debug\ConsoleSnake.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\ConsoleSnake\obj\Debug\ConsoleSnake.exe
+C:\Users\User\source\repos\ConsoleSnake\obj\Debug\ConsoleSnake.pdb
