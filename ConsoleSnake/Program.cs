@@ -8,10 +8,13 @@ namespace ConsoleSnake
 {
     class Program
     {
-        //проверка столкновений
-        //невозможность двигаться в обратном направлении
-        //телепорт по краям экрана +-
-        //счет ++
+        // проверка столкновений ++
+        // невозможность двигаться в обратном направлении ++
+        // телепорт по краям экрана ++
+        // счет ++
+        // еда не может появиться в хвосте змейки
+        // при проигрыше есть возможность перезапуска ++
+        // сохранение рекорда в рамках одного запуска ??
 
 
         // Параметры еды
@@ -27,15 +30,21 @@ namespace ConsoleSnake
 
             food_y = rnd.Next(0, 40);
         }
+
         static void Main()
         {
+            #region Стартовое заполнение поля игры
+
             // Параметры программы
-            Console.SetWindowSize(120, 40);
-            Console.SetBufferSize(120, 40);
+            int screenWidth = 120;
+            int screenLenght = 40;
+            Console.SetWindowSize(screenWidth, screenLenght);
+            Console.SetBufferSize(screenWidth, screenLenght);
             Console.CursorVisible = false;
             int score = 0;
             bool isGame = true;
-
+            int scoreTotal = 0;
+            string restart;
 
             // Параметры змейки
             int head_x = 20;
@@ -45,6 +54,7 @@ namespace ConsoleSnake
             int[] body_x = new int[100];
             int[] body_y = new int[100];
 
+            Console.Clear();
 
             // Стартовое заполнение змейки
             for (int i = 0; i < snakeLen; i++) //создаем хвост змейки
@@ -56,8 +66,9 @@ namespace ConsoleSnake
             // Стартовое заполнение еды
             SpawnFood();
 
+            #endregion
 
-            // Игровой цикл
+            #region Цикл игры
 
             while (isGame == true)
             {
@@ -100,7 +111,6 @@ namespace ConsoleSnake
                 if (dir == 3) head_y -= 1;
 
 
-
                 for (int i = snakeLen; i > 0; i--)
                 {
                     body_x[i] = body_x[i - 1];
@@ -116,13 +126,13 @@ namespace ConsoleSnake
                 }
 
                 // Бесконечное поле
-                if (head_x < 2) head_x = 116;
+                if (head_x < 2) head_x = screenWidth - 3;
 
-                if (head_x > 116) head_x = 1;
+                if (head_x > screenWidth - 3) head_x = 1;
 
-                if (head_y < 1) head_y = 38;
+                if (head_y < 1) head_y = screenLenght - 2;
 
-                if (head_y > 38) head_y = 1;
+                if (head_y > screenLenght - 2) head_y = 1;
 
 
                 // Еда
@@ -133,20 +143,25 @@ namespace ConsoleSnake
                     score++;
                 }
 
+                for (int i = 1; i < snakeLen; i++)
+                {
+                    if (body_x[i] == food_x && body_y[i] == food_y) SpawnFood();
+                }
+
                 // 3. Отрисовка
 
                 for (int i = 0; i < snakeLen; i++) //Отрисовываем хвост змейки
                 {
                      Console.SetCursorPosition(body_x[i], body_y[i]);
-                     Console.Write("B");
+                     Console.Write("*");
 
                 }
 
                 Console.SetCursorPosition(head_x, head_y); //Отрисовываем голову змейки
-                Console.Write("H");
+                Console.Write("*");
 
                 Console.SetCursorPosition(food_x, food_y); //Отрисовываем еду
-                Console.Write("F");
+                Console.Write("*");
 
                 Console.SetCursorPosition(0, 0);
                 Console.Write("Score: " + score);
@@ -154,10 +169,28 @@ namespace ConsoleSnake
                 // 4. Ожидание
 
                 System.Threading.Thread.Sleep(50);  // Команда задержки (50 миллисекунд)
-            }
 
-            Console.Write("Ты проиграл!");
-            Console.ReadLine();
+            }
+            #endregion
+
+            #region Подсчет итогов игры
+
+            scoreTotal += score;
+
+            Console.Clear();
+
+            Console.SetCursorPosition(40, 15);
+            Console.Write("Ты проиграл! Твой счет за этот раунд: " + score);
+            Console.SetCursorPosition(40, 17);
+            Console.Write("Твой счет за всю игру: " + scoreTotal);
+            Console.SetCursorPosition(40, 19);
+            Console.WriteLine("Для новой игры нажмите Enter");
+            restart = Console.ReadLine();
+
+            if (restart != null) Main();
+
+            #endregion
         }
     }
 }
+
